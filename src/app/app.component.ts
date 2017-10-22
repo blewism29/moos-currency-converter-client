@@ -27,7 +27,6 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() : void {
-    console.log("Init...");
     this.getInfo("USD", "CRC,MXN");
   }
 
@@ -52,9 +51,6 @@ export class AppComponent {
         this.usd = 1;
         this.crc = data["quotes"]["USDCRC"];
         this.mxn = data["quotes"]["USDMXN"];
-
-        console.log(this.crc);
-        console.log(this.mxn);
 
         this.timer();
       }
