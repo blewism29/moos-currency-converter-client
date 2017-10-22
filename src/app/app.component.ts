@@ -8,6 +8,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 })
 
 export class AppComponent {
+  
   title = "Moo's Currency Converter";
 
   mxn: number;
@@ -18,18 +19,18 @@ export class AppComponent {
   usdInput: number;
   crcInput: number;
 
-
   // http://apilayer.net/api/live?access_key=9effac8a25c6fc6740c7f27838acdf45&currencies=CRC,MXN&source=USD&format=1
   accessKey = "9effac8a25c6fc6740c7f27838acdf45";
   apiUrl = "http://apilayer.net/api/live";
 
-
   constructor(private http: HttpClient) {}
 
+  // Init
   ngOnInit() : void {
     this.getInfo("USD", "CRC,MXN");
   }
 
+  // Http request function
   getInfo(source: String, currencies: String) : void {
 
     var url = this.apiUrl 
@@ -37,12 +38,6 @@ export class AppComponent {
       + "&source" + source
       + "&format=1"
       + "&currencies=" + currencies;
-
-    /*currencies.forEach(
-      (currency) => {
-        url += currency + ","
-      }
-    )*/
 
     var request = this.http.get(url, { responseType: 'json' });
     
@@ -57,29 +52,49 @@ export class AppComponent {
     );
   }
 
+  // Function to handle UI actions
+  resetFields() : void {
+    this.usdInput = 0;
+    this.crcInput = 0;
+    this.mxnInput = 0;
+  }
+
   calculateFromUSD() : void {
-    //this.usdInput = pUsd * 1;
+    
+    //if (this.usdInput == null) {
+    //  this.resetFields();
+    //}
+
     this.crcInput = (this.crc * this.usdInput);
     this.mxnInput = (this.mxn * this.usdInput);
   }
 
   calculateFromCRC() : void {
-    //this.crcInput = pCrc;
+    
+    //if (this.crcInput == null) {
+    //  this.resetFields();
+    //}
+
     this.usdInput = (this.crcInput / this.crc);
     this.mxnInput = (this.mxn * this.usdInput);
   }
 
   calculateFromMXN() : void {
-    //this.mxnInput = pMxn;
+    
+    //if (this.mxnInput == null) {
+    //  this.resetFields();
+    //}
+    
     this.usdInput = (this.mxnInput / this.mxn);
     this.crcInput = (this.crc * this.usdInput);
   }
 
+  // timer for refreshing currency data
   timer() : void {
     setTimeout(
       () => {
         this.getInfo("USD", "CRC,MXN");
-    }, 100000);
+    }, 60000);
   }
 
 }
